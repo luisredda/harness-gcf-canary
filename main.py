@@ -15,10 +15,10 @@ def hello_world(request):
     canary = os.environ.get('CANARY')
     if canary == 'true':
         message = 'Hello canary!'
-        is_canary = True
+        is_canary = 'True'
     else:
         message = 'Hello stable!'
-        is_canary = False
+        is_canary = 'False'
     
     response = {
         'message': message,
