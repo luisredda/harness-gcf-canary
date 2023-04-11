@@ -1,20 +1,25 @@
 import os
+from flask import Flask, make_response
+from flask_cors import CORS
 
-def hello_world(request):
-    
-     headers = {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type'
-    }
-    
+app = Flask(__name__)
+CORS(app)
+
+@app.route('/', methods=['GET', 'OPTIONS'])
+def hello_world():
     if request.method == 'OPTIONS':
         # Handle CORS preflight request
-        return ('', 204, headers)
-    
-    canary = os.environ.get('CANARY')
-    if canary == 'true':
-        message = 'Hello canary!'
+        response = make_response('', 204)
     else:
-        message = 'Hello stable!'
-    return message
+        canary = os.environ.get('CANARY')
+        if canary == 'true':
+            message = 'Hello canary!'
+        else:
+            message = 'Hello stable!'
+        response = make_response(message)
+    
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    response.headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS'
+    response.headers['Access-Control-Allow-Headers'] = 'Content-Type'
+    
+    return response
