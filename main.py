@@ -11,10 +11,21 @@ def hello_world(request):
     if request.method == 'OPTIONS':
         # Handle CORS preflight request
         return ('', 204, headers)
-    
+
     canary = os.environ.get('CANARY')
     if canary == 'true':
         message = 'Hello canary!'
+        is_canary = True
     else:
         message = 'Hello stable!'
-    return message
+        is_canary = False
+    
+    response = {
+        'message': message,
+        'is_canary': is_canary
+    }
+
+    return response
+
+
+
