@@ -25,7 +25,14 @@ def hello_world(request):
         'is_canary': is_canary
     }
 
-    return response
+        # Set CORS headers for the main request
+    headers = {
+        'Access-Control-Allow-Origin': '*'
+    }
+
+    return (response, 200, headers)
+
+
 
 
 
