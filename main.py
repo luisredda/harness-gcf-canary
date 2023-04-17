@@ -12,27 +12,16 @@ def hello_world(request):
         # Handle CORS preflight request
         return ('', 204, headers)
 
-    canary = os.environ.get('CANARY')
-    if canary == 'true':
-        message = 'Hello canary!'
-        is_canary = 'True'
-    else:
-        message = 'Hello stable!'
-        is_canary = 'False'
-    
+    revision = os.environ.get('K_REVISION')
+    message = 'Hello Harness!'
     response = {
-        'message': message,
-        'is_canary': is_canary
+        'revision': revision,
+        'message': message
     }
 
-        # Set CORS headers for the main request
+    # Set CORS headers for the main request
     headers = {
         'Access-Control-Allow-Origin': '*'
     }
 
     return (response, 200, headers)
-
-
-
-
-
