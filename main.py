@@ -48,7 +48,7 @@ def evaluate_ff():
                       with_events_url("https://events.ff.harness.io/api/1.0"))  
   
     target = Target(identifier='GCF_Api_Guest') 
-    delay = client.bool_variation('GCF_API_Delay', target, False)  
+    ff_delay = client.bool_variation('GCF_API_Delay', target, False)  
     ff_customer_type = client.string_variation('GCF_API_CustomerType', target, "No Color")
     
     return ff_delay, ff_customer_type
