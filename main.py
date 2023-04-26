@@ -20,15 +20,17 @@ def hello_world(request):
 
     revision = os.environ.get('K_REVISION')
     message = 'Hello Harness!'
-    ff_status = evaluate_ff()
+    ff_delay, ff_customer_type = evaluate_ff()
     
-    if ff_status == 'True':
+    if ff_delay == 'True':
+        # increase response time for verification purposes 
         time.sleep(1000)
    
     response = {
         'revision': revision,
         'message': message,
-        'ff_enabled': ff_status
+        'ff_delay_enabled': ff_delay,
+        'ff_customer_type': ff_customer_type
     }
 
     # Set CORS headers for the main request
@@ -46,5 +48,7 @@ def evaluate_ff():
                       with_events_url("https://events.ff.harness.io/api/1.0"))  
   
     target = Target(identifier='GCF_Api_Guest') 
-    result = client.bool_variation('GCF_API_Feature', target, False)  
-    return result
+    delay = client.bool_variation('GCF_API_Delay', target, False)  
+    ff_customer_type = client.string_variation('GCF_API_CustomerType', target, "No Color")
+    
+    return ff_delay, ff_customer_type
